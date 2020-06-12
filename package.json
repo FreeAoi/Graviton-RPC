@@ -1,0 +1,14 @@
+{
+  "name": "discordrp",
+  "version": "1.0.1",
+  "description": "A plugin for show your current editing file in discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Free",
+  "license": "ISC",
+  "dependencies": {
+    "discord-rpc": "github:discordjs/RPC"
+  }
+}

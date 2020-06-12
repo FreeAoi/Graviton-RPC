@@ -1,0 +1,11 @@
+# node package manager
+node_modules/
+npm-debug.log*
+.npm
+
+# eslint cache
+.eslintcache
+
+# dotenv environment variables file
+.env
+.env.test

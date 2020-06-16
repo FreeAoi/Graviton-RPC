@@ -1,5 +1,6 @@
 {
   "name": "discordrp",
+  "id":"discord-rpc-plugin",
   "version": "1.0.1",
   "description": "A plugin for show your current editing file in discord",
   "main": "index.js",

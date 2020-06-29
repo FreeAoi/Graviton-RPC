@@ -1,11 +1,11 @@
 {
   "name": "discordrp",
-  "id":"discord-rpc-plugin",
-  "version": "1.0.1",
-  "description": "A plugin for show your current editing file in discord",
+  "id": "discord-rpc-plugin",
+  "version": "1.0.2",
+  "description": "A plugin to show your current editing file in discord",
   "main": "index.js",
-  "mainSrc":"index.js",
-  "mainDev":"dist/index.js",
+  "mainSrc": "index.js",
+  "mainDev": "dist/index.js",
   "scripts": {
     "watch": "gvsdk --entry package.json --target plugin",
     "build": "gvsdk --entry package.json --target plugin --mode release"
@@ -15,7 +15,7 @@
   "dependencies": {
     "discord-rpc": "github:discordjs/RPC"
   },
-  "devDependencies":{
+  "devDependencies": {
     "@gveditor/sdk": "^0.1.5"
   }
 }

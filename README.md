@@ -1,5 +1,5 @@
 # Graviton-RPC
-A Simple Discord Rich Presence for the Graviton Editor, only support for graviton `2.0.88` or more.
+A Simple Discord Rich Presence for the Graviton Editor, only support for graviton `2.0.91` or more.
 
 Don't forget :star: if you like it :heart:
 
@@ -7,6 +7,15 @@ Don't forget :star: if you like it :heart:
 
 ![Marc](https://media.discordapp.net/attachments/720301011247300709/720737972542111744/unknown.png?width=408&height=475)
 ![Free](https://media.discordapp.net/attachments/720301011247300709/720808179197280267/unknown.png?width=485&height=475)
+
+## Update 1.0.2
+
+```
+- Couldn't show current editing file in Linux and MacOS
+- Now when you close the last opened tab it won't show anything instead of showing the last tab
+- Disabled the plugin when Graviton is in development mode
+```
+
 ## Update 1.0.1
 
 ```

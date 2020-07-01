@@ -1,5 +1,5 @@
 const DiscordRPC = require('discord-rpc')
-const path = require('path')
+const path = window.require('path')
 
 function entry({ RunningConfig, Notification, StaticConfig }) {
      const { isDev } = RunningConfig.data

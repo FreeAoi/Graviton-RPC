@@ -3,7 +3,7 @@ const path = window.require('path')
 
 function entry({ RunningConfig, Notification, StaticConfig }) {
      const { isDev } = RunningConfig.data
-     //if(isDev) return
+     if(isDev) return
      const clientId = '720362061053558805'
      DiscordRPC.register(clientId);
      const rpc = new DiscordRPC.Client({ transport: 'ipc' })
@@ -32,8 +32,8 @@ function entry({ RunningConfig, Notification, StaticConfig }) {
 
      RunningConfig.on('aTabHasBeenFocused', ({ client, instance, parentFolder, directory, tabElement }) => {
           if (client) {
-               let editingFile = path.basename(directory)
-               let workingProject = path.normalize(parentFolder)
+               const editingFile = path.basename(path.normalize(directory))
+               const workingProject = path.basename(path.normalize(parentFolder))
                let file = client.do('getMode', { instance }).name;
                switch (file) {
                     case 'application/json':

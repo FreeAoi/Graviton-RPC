@@ -1,30 +1,31 @@
-# Graviton-RPC
-A Simple Discord Rich Presence for the Graviton Editor, only support for graviton `2.0.91` or more.
+# Discord Rich Presence
+![MadeForGraviton](https://raw.githubusercontent.com/Graviton-Code-Editor/website/master/src/badges/made_for_graviton.svg?sanitize=true)
 
-Don't forget :star: if you like it :heart:
+A Simple Discord Rich Presence for the amazing **Graviton Editor**
 
-## Screenshot
+WIP, Contributions / suggestions are welcomed.
 
-![Marc](https://media.discordapp.net/attachments/720301011247300709/720737972542111744/unknown.png?width=408&height=475)
-![Free](https://media.discordapp.net/attachments/720301011247300709/720808179197280267/unknown.png?width=485&height=475)
-
-## Update 1.0.2
+### 📥 Update 1.0.3
 
 ```
+- Added a new varity for different file extensions
+- Now the graviton version need be 2.0.91 or more
 - Couldn't show current editing file in Linux and MacOS
 - Now when you close the last opened tab it won't show anything instead of showing the last tab
 - Disabled the plugin when Graviton is in development mode
+- Now will appeared a button for try to reconnect in the Status Bar, and when are connected too.
 ```
 
-## Update 1.0.1
+### 📷 Screenshots
 
-```
-- Added new Icons (Typescript, JSON, Markdown)
-- Now the rich presence will start when graviton start up
-- Now the time elapsed will not restart on file change
-- Notifications when its impossible to connect with discord or connect correctly with discord
-```
+![Free](https://media.discordapp.net/attachments/580228966435258376/729052137362948136/unknown.png)
+![Free](https://media.discordapp.net/attachments/580228966435258376/729052362982948915/unknown.png)
 
-**If your language dont be support or found a error, contact me Free 公園#8525 in discord**
+### 🎉 Special thanks
+Many thanks to Marc for contributing to the plugin and for create Graviton Editor
+
+- Marc Espín Sanz [Github](https://github.com/marc2332)
+- Graviton Editor Repository [Github](https://github.com/Graviton-Code-Editor/Graviton-App)
+
 
 

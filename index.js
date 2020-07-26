@@ -60,7 +60,11 @@ exports.entry = ({ RunningConfig, StatusBarItem }) => {
                 case "text/x-csrc":
                     file = "c";
                     break;
+                case "text/jsx":
+                    file = "javascript";
+                    break;
             }
+            console.log(file)
             rpc.setActivity({
                 details: `Editing ${editingFile}`,
                 state: `Workspace: ${workingProject}`,

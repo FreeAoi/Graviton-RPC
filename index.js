@@ -1,3 +1,4 @@
+import openSettings from "./settings.js";
 import DiscordRPC from "discord-rpc";
 import translate from "./i18n.js";
 
@@ -97,6 +98,7 @@ export const entry = (API) => {
             barItem.setHint(translate("reconnect", language));
         } else if (barItem.label.startsWith("📡")) {
             barItem.setLabel(`📡 ${translate("connected", language)}`);
+            barItem.setHint(translate("settings", language));
         }
     });
 }
@@ -112,8 +114,9 @@ function onError(language, API, error) {
     barItem.show();
 }
 
-function onConnected(language) {
+function onConnected(language, API) {
     barItem.setLabel(`📡 ${translate("connected", language)}`);
-    barItemAction = () => null;
+    barItem.setHint(translate("settings", language));
+    barItemAction = () => openSettings(API);
     barItem.show();
 }

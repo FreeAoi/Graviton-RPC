@@ -14,6 +14,14 @@ export const strings = {
     error: {
         english: "Error in GravitonRPC",
         spanish: "Error en GravitonRPC"
+    },
+    settings: {
+        english: "Click here to open settings",
+        spanish: "Clic aquí para abrir la configuración"
+    },
+    dialogTitle: {
+        english: "GravitonRPC Settings",
+        spanish: "Ajustes de GravitonRPC"
     }
 };
 

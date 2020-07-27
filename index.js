@@ -1,26 +1,27 @@
-const supportedFiles = ["c", "cpp", "css", "git", "html", "javascript", "json", "jsx", "md", "python", "svelte", "txt", "typescript", "vue"];
-const DiscordRPC = require("discord-rpc");
-const path = window.require("path");
-const clientId = "720362061053558805";
+import DiscordRPC from "discord-rpc";
+import translate from "./i18n.js";
 
-exports.entry = ({ RunningConfig, StatusBarItem }) => {
+const supportedFiles = ["c", "cpp", "css", "git", "html", "javascript", "json", "jsx", "md", "python", "svelte", "txt", "typescript", "vue"];
+const rpc = new DiscordRPC.Client({ transport: "ipc" });
+const clientId = "720362061053558805";
+const path = window.require("path");
+const timestamp = Date.now();
+
+let barItem;
+let currentTab;
+let barItemAction = () => null;
+
+export const entry = (API) => {
+    const { RunningConfig, StatusBarItem, StaticConfig } = API;
     if (RunningConfig.data.isDev) return;
-    const rpc = new DiscordRPC.Client({ transport: "ipc" });
-    DiscordRPC.register(clientId);
-    const timestamp = Date.now();
-    var currentTab;
-    rpc.login({ clientId })
-        .catch(() => {
-            new StatusBarItem({
-                label: "🚫 Disconnected from Discord",
-                hint: "Click here for try to connect",
-                action: () => rpc.login({ clientId })
-            });
-        });
+    barItem = new StatusBarItem({
+        label: "",
+        action: () => barItemAction()
+    });
+    barItem.hide();
+    rpc.login({ clientId }).catch((e) => onError(StaticConfig.data.appLanguage, API, e));
     rpc.on("connected", () => {
-        new StatusBarItem({
-            label: "📡 Connected to Discord",
-        });
+        onConnected(StaticConfig.data.appLanguage, API);
         rpc.setActivity({
             largeImageKey: "applogo",
             largeImageText: "Graviton Editor",
@@ -64,13 +65,12 @@ exports.entry = ({ RunningConfig, StatusBarItem }) => {
                     file = "javascript";
                     break;
             }
-            console.log(file)
             rpc.setActivity({
                 details: `Editing ${editingFile}`,
                 state: `Workspace: ${workingProject}`,
                 startTimestamp: timestamp,
                 largeImageKey: supportedFiles.includes(file) ? file : "txt",
-                largeImageText: `Editing a ${file.toUpperCase()} file`,
+                largeImageText: `Editing a ${file.replace(/^[a-z]/gi, (c) => c.toUpperCase())} file`,
                 smallImageKey: "applogo",
                 smallImageText: "Graviton",
                 instance: false,
@@ -90,4 +90,30 @@ exports.entry = ({ RunningConfig, StatusBarItem }) => {
             currentTab = null;
         }
     });
+
+    StaticConfig.keyChanged("appLanguage", (language) => {
+        if (barItem.label.startsWith("🚫")) {
+            barItem.setLabel(`🚫 ${translate("connectError", language)}`);
+            barItem.setHint(translate("reconnect", language));
+        } else if (barItem.label.startsWith("📡")) {
+            barItem.setLabel(`📡 ${translate("connected", language)}`);
+        }
+    });
+}
+
+function onError(language, API, error) {
+    barItem.setLabel(`🚫 ${translate("disconnected", language)}`);
+    barItem.setHint(translate("reconnect", language));
+    new API.Notification({
+        title: translate("error", language),
+        content: error.message.replace(/^[a-z]/gi, (c) => c.toUpperCase())
+    });
+    barItemAction = () => rpc.login({ clientId }).catch((e) => onError(language, API, e));
+    barItem.show();
+}
+
+function onConnected(language) {
+    barItem.setLabel(`📡 ${translate("connected", language)}`);
+    barItemAction = () => null;
+    barItem.show();
 }

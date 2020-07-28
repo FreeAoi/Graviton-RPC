@@ -1,4 +1,4 @@
-import openSettings from "./settings.js";
+import * as settings from "./settings.js";
 import DiscordRPC from "discord-rpc";
 import translate from "./i18n.js";
 
@@ -12,9 +12,18 @@ let barItem;
 let currentTab;
 let barItemAction = () => null;
 
+const defaultPresence = {
+    largeImageKey: "applogo",
+    largeImageText: "Graviton Editor",
+    startTimestamp: timestamp,
+    instance: false
+};
+
 export const entry = (API) => {
     const { RunningConfig, StatusBarItem, StaticConfig } = API;
     if (RunningConfig.data.isDev) return;
+    const config = new settings.Settings(StaticConfig);
+    config.create();
     barItem = new StatusBarItem({
         label: "",
         action: () => barItemAction()
@@ -23,12 +32,7 @@ export const entry = (API) => {
     rpc.login({ clientId }).catch((e) => onError(StaticConfig.data.appLanguage, API, e));
     rpc.on("connected", () => {
         onConnected(StaticConfig.data.appLanguage, API);
-        rpc.setActivity({
-            largeImageKey: "applogo",
-            largeImageText: "Graviton Editor",
-            startTimestamp: timestamp,
-            instance: false
-        });
+        rpc.setActivity({ ...defaultPresence });
     });
 
     RunningConfig.on("aTabHasBeenFocused", ({ client, instance, parentFolder, directory, tabElement }) => {
@@ -67,14 +71,14 @@ export const entry = (API) => {
                     break;
             }
             rpc.setActivity({
-                details: `Editing ${editingFile}`,
-                state: `Workspace: ${workingProject}`,
-                startTimestamp: timestamp,
+                ...defaultPresence,
+                details: settings.parseText(config.get("details"), { editingFile, workingProject, file, instance }),
+                state: settings.parseText(config.get("state"), { editingFile, workingProject, file, instance }),
                 largeImageKey: supportedFiles.includes(file) ? file : "txt",
-                largeImageText: `Editing a ${file.replace(/^[a-z]/gi, (c) => c.toUpperCase())} file`,
+                largeImageText: settings.parseText(config.get("imageText"), { editingFile, workingProject, file, instance }),
                 smallImageKey: "applogo",
                 smallImageText: "Graviton",
-                instance: false,
+                startTimestamp: config.get("currentFileTime") ? Date.now() : timestamp
             });
             currentTab = tabElement;
         }
@@ -82,12 +86,7 @@ export const entry = (API) => {
 
     RunningConfig.on("aTabHasBeenClosed", ({ client, tabElement }) => {
         if (client && tabElement === currentTab) {
-            rpc.setActivity({
-                largeImageKey: "applogo",
-                largeImageText: "Graviton Editor",
-                startTimestamp: timestamp,
-                instance: false
-            });
+            rpc.setActivity({ ...defaultPresence });
             currentTab = null;
         }
     });
@@ -117,6 +116,6 @@ function onError(language, API, error) {
 function onConnected(language, API) {
     barItem.setLabel(`📡 ${translate("connected", language)}`);
     barItem.setHint(translate("settings", language));
-    barItemAction = () => openSettings(API);
+    barItemAction = () => settings.open(API);
     barItem.show();
 }

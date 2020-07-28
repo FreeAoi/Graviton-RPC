@@ -22,14 +22,32 @@ export const strings = {
     dialogTitle: {
         english: "GravitonRPC Settings",
         spanish: "Ajustes de GravitonRPC"
+    },
+    elapsed: {
+        english: (time) => `${time} elapsed`,
+        spanish: (time) => `Tiempo transcurrido: ${time}`
+    },
+    clickEdit: {
+        english: "Double Click to edit. Changes are automatically saved",
+        spanish: "Doble clic para editar. Los cambios son guardados automáticamente"
+    },
+    variables: {
+        english: "Useful variables:",
+        spanish: "Variables útiles:"
+    },
+    currentFileTime: {
+        english: "Show current file time",
+        spanish: "Mostrar tiempo del archivo actual"
     }
 };
 
 // brazilian_portuguese, catalan, english, french, german, italian, russian, spanish, polish
 
-export default function translate(text, language) {
+export default function translate(text, language, ...args) {
     let string = strings[text][language];
     if (!string) string = strings[text].english;
     if (!string) return null;
-    return string;
+    if (typeof string === "function")
+        return string(...args);
+    else return string;
 }

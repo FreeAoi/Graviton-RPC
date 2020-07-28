@@ -10,8 +10,8 @@
     "watch": "gvsdk --entry package.json --target plugin",
     "build": "gvsdk --entry package.json --target plugin --mode release"
   },
-  "author": "Free",
-  "license": "ISC",
+  "author": "FreeAoi",
+  "license": "MIT",
   "dependencies": {
     "discord-rpc": "github:discordjs/RPC",
     "react": "^16.13.1",

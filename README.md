@@ -1,13 +1,15 @@
-# Discord Rich Presence
-![MadeForGraviton](https://raw.githubusercontent.com/Graviton-Code-Editor/website/master/src/badges/made_for_graviton.svg?sanitize=true)
+# Graviton Rich Presence
+[![MadeForGraviton](https://raw.githubusercontent.com/Graviton-Code-Editor/website/master/src/badges/made_for_graviton.svg?sanitize=true)](https://github.com/Graviton-Code-Editor/Graviton-App)
 
-A Simple Discord Rich Presence for the amazing **Graviton Editor**
+A fully customizable Discord Rich Presence for the amazing **Graviton Editor**
 
-WIP, Contributions / suggestions are welcomed.
+Contributions and suggestions are welcomed
 
 ### 📥 Update 1.0.3
 
 ```
+- Added a dialog to customize your presence
+
 - Added a new varity for different file extensions
 - Now the graviton version need be 2.0.91 or more
 - Couldn't show current editing file in Linux and MacOS
@@ -18,14 +20,10 @@ WIP, Contributions / suggestions are welcomed.
 
 ### 📷 Screenshots
 
-![Free](https://media.discordapp.net/attachments/580228966435258376/729052137362948136/unknown.png)
-![Free](https://media.discordapp.net/attachments/580228966435258376/729052362982948915/unknown.png)
+<img src="https://media.discordapp.net/attachments/580228966435258376/729052137362948136/unknown.png" width="250em" /> <img src="https://media.discordapp.net/attachments/580228966435258376/729052362982948915/unknown.png" width="250em" />
 
 ### 🎉 Special thanks
-Many thanks to Marc for contributing to the plugin and for create Graviton Editor
+Many thanks to [Marc](https://github.com/marc2332) for contributing to the plugin and for create Graviton Editor
 
-- Marc Espín Sanz [Github](https://github.com/marc2332)
-- Graviton Editor Repository [Github](https://github.com/Graviton-Code-Editor/Graviton-App)
-
-
-
+- [Marc Espín Sanz](https://github.com/marc2332)
+- [Graviton Editor](https://github.com/Graviton-Code-Editor/Graviton-App)

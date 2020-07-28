@@ -24,10 +24,10 @@ export const entry = (API) => {
     if (RunningConfig.data.isDev) return;
     const config = new settings.Settings(StaticConfig);
     config.create();
-    barItem = new StatusBarItem({
+    barItem = patchItem(new StatusBarItem({
         label: "",
         action: () => barItemAction()
-    });
+    }));
     barItem.hide();
     rpc.login({ clientId }).catch((e) => onError(StaticConfig.data.appLanguage, API, e));
     rpc.on("connected", () => {
@@ -100,6 +100,22 @@ export const entry = (API) => {
             barItem.setHint(translate("settings", language));
         }
     });
+}
+
+function patchItem(item) {
+    item.label = "";
+    item.hint = null;
+    const setLabel = item.setLabel;
+    const setHint = item.setHint;
+    item.setLabel = (label) => {
+        setLabel(label);
+        item.label = label;
+    }
+    item.setHint = (hint) => {
+        setHint(hint);
+        item.hint = hint;
+    }
+    return item;
 }
 
 function onError(language, API, error) {

@@ -72,9 +72,9 @@ export function open({ Dialog, StaticConfig, puffin, drac }) {
     const settings = new Settings(StaticConfig);
     const previewStyle = puffin.style`
         & {
-            height: 30%;
+            height: auto;
             display: flex;
-            padding: 8px 10px;
+            padding: 11px 10px;
             border-radius: 5px;
             margin-bottom: 10px;
             align-items: center;

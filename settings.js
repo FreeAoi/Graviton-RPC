@@ -62,12 +62,12 @@ export function parseText(text, { editingFile, workingProject, file, instance })
         ? text
             .replace(/{currentfile}/gi, editingFile)
             .replace(/{workspace}/gi, workingProject)
-            .replace(/{filetype}/gi, file)
+            .replace(/{filetype}/gi, file.toUpperCase())
             .replace(/{totallines}/gi, instance.options.value.split("\n").length)
         : text;
 }
 
-export function open({ Dialog, StaticConfig, puffin }) {
+export function open({ Dialog, StaticConfig, puffin, drac }) {
     const language = StaticConfig.data.appLanguage;
     const settings = new Settings(StaticConfig);
     const previewStyle = puffin.style`
@@ -76,7 +76,7 @@ export function open({ Dialog, StaticConfig, puffin }) {
             display: flex;
             padding: 8px 10px;
             border-radius: 5px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             align-items: center;
             background-color: #7289da;
         }
@@ -131,10 +131,24 @@ export function open({ Dialog, StaticConfig, puffin }) {
             border-color: #ffffff;
         }
     `;
+    const inputStyle = puffin.style`
+        & {
+            margin-bottom: 10px;
+        }
+
+        & > h3,
+        & > input {
+            margin: 0;
+        }
+
+        & > h3 {
+            margin-bottom: 5px;
+        }
+    `;
     const dialog = new Dialog({
         title: translate("dialogTitle", language),
         width: "450px",
-        height: "350px",
+        height: "400px",
         component: () => {
             class Component extends React.Component {
                 constructor(props) {
@@ -226,6 +240,14 @@ export function open({ Dialog, StaticConfig, puffin }) {
                                 <p>{translate("elapsed", language, this.parseTime(this.state.time))}</p>
                             </div>
                         </div>
+                        <div className={inputStyle}>
+                            <h3>{translate("imageText", language)}</h3>
+                            <input
+                                type="text"
+                                defaultValue={settings.get("imageText")}
+                                className={drac.Input().children[0]._props[0].value}
+                                onChange={(e) => this.change("imageText", e.target.value)} />
+                        </div>
                         <div className={checkboxStyle}>
                             <div
                                 className={settings.get("currentFileTime") ? checkedBoxStyle : undefined}
@@ -250,4 +272,4 @@ export function open({ Dialog, StaticConfig, puffin }) {
         }
     });
     dialog.launch();
-}   
+}

@@ -38,6 +38,10 @@ export const strings = {
     currentFileTime: {
         english: "Show current file time",
         spanish: "Mostrar tiempo del archivo actual"
+    },
+    imageText: {
+        english: "Image text",
+        spanish: "Texto de la imagen"
     }
 };
 

@@ -1,32 +1,38 @@
-const supportedFiles = ["c", "cpp", "css", "git", "html", "javascript", "json", "jsx", "md", "python", "svelte", "txt", "typescript", "vue"];
-const DiscordRPC = require("discord-rpc");
-const path = window.require("path");
-const clientId = "720362061053558805";
+import * as settings from "./settings.js";
+import DiscordRPC from "discord-rpc";
+import translate from "./i18n.js";
 
-exports.entry = ({ RunningConfig, StatusBarItem }) => {
+const supportedFiles = ["c", "cpp", "css", "git", "html", "javascript", "json", "jsx", "md", "python", "svelte", "txt", "typescript", "vue"];
+const rpc = new DiscordRPC.Client({ transport: "ipc" });
+const clientId = "720362061053558805";
+const path = window.require("path");
+const timestamp = Date.now();
+
+let barItem;
+let currentTab;
+let barItemAction = () => null;
+
+const defaultPresence = {
+    largeImageKey: "applogo",
+    largeImageText: "Graviton Editor",
+    startTimestamp: timestamp,
+    instance: false
+};
+
+export const entry = (API) => {
+    const { RunningConfig, StatusBarItem, StaticConfig } = API;
     if (RunningConfig.data.isDev) return;
-    const rpc = new DiscordRPC.Client({ transport: "ipc" });
-    DiscordRPC.register(clientId);
-    const timestamp = Date.now();
-    var currentTab;
-    rpc.login({ clientId })
-        .catch(() => {
-            new StatusBarItem({
-                label: "🚫 Disconnected from Discord",
-                hint: "Click here for try to connect",
-                action: () => rpc.login({ clientId })
-            });
-        });
+    const config = new settings.Settings(StaticConfig);
+    config.create();
+    barItem = patchItem(new StatusBarItem({
+        label: "",
+        action: () => barItemAction()
+    }));
+    barItem.hide();
+    rpc.login({ clientId }).catch((e) => onError(StaticConfig.data.appLanguage, API, e));
     rpc.on("connected", () => {
-        new StatusBarItem({
-            label: "📡 Connected to Discord",
-        });
-        rpc.setActivity({
-            largeImageKey: "applogo",
-            largeImageText: "Graviton Editor",
-            startTimestamp: timestamp,
-            instance: false
-        });
+        onConnected(StaticConfig.data.appLanguage, API);
+        rpc.setActivity({ ...defaultPresence });
     });
 
     RunningConfig.on("aTabHasBeenFocused", ({ client, instance, parentFolder, directory, tabElement }) => {
@@ -64,16 +70,15 @@ exports.entry = ({ RunningConfig, StatusBarItem }) => {
                     file = "javascript";
                     break;
             }
-            console.log(file)
             rpc.setActivity({
-                details: `Editing ${editingFile}`,
-                state: `Workspace: ${workingProject}`,
-                startTimestamp: timestamp,
+                ...defaultPresence,
+                details: settings.parseText(config.get("details"), { editingFile, workingProject, file, instance }),
+                state: settings.parseText(config.get("state"), { editingFile, workingProject, file, instance }),
                 largeImageKey: supportedFiles.includes(file) ? file : "txt",
-                largeImageText: `Editing a ${file.toUpperCase()} file`,
+                largeImageText: settings.parseText(config.get("imageText"), { editingFile, workingProject, file, instance }),
                 smallImageKey: "applogo",
                 smallImageText: "Graviton",
-                instance: false,
+                startTimestamp: config.get("currentFileTime") ? Date.now() : timestamp
             });
             currentTab = tabElement;
         }
@@ -81,13 +86,52 @@ exports.entry = ({ RunningConfig, StatusBarItem }) => {
 
     RunningConfig.on("aTabHasBeenClosed", ({ client, tabElement }) => {
         if (client && tabElement === currentTab) {
-            rpc.setActivity({
-                largeImageKey: "applogo",
-                largeImageText: "Graviton Editor",
-                startTimestamp: timestamp,
-                instance: false
-            });
+            rpc.setActivity({ ...defaultPresence });
             currentTab = null;
         }
     });
+
+    StaticConfig.keyChanged("appLanguage", (language) => {
+        if (barItem.label.startsWith("🚫")) {
+            barItem.setLabel(`🚫 ${translate("connectError", language)}`);
+            barItem.setHint(translate("reconnect", language));
+        } else if (barItem.label.startsWith("📡")) {
+            barItem.setLabel(`📡 ${translate("connected", language)}`);
+            barItem.setHint(translate("settings", language));
+        }
+    });
+}
+
+function patchItem(item) {
+    item.label = "";
+    item.hint = null;
+    const setLabel = item.setLabel;
+    const setHint = item.setHint;
+    item.setLabel = (label) => {
+        setLabel(label);
+        item.label = label;
+    }
+    item.setHint = (hint) => {
+        setHint(hint);
+        item.hint = hint;
+    }
+    return item;
+}
+
+function onError(language, API, error) {
+    barItem.setLabel(`🚫 ${translate("disconnected", language)}`);
+    barItem.setHint(translate("reconnect", language));
+    new API.Notification({
+        title: translate("error", language),
+        content: error.message.replace(/^[a-z]/gi, (c) => c.toUpperCase())
+    });
+    barItemAction = () => rpc.login({ clientId }).catch((e) => onError(language, API, e));
+    barItem.show();
+}
+
+function onConnected(language, API) {
+    barItem.setLabel(`📡 ${translate("connected", language)}`);
+    barItem.setHint(translate("settings", language));
+    barItemAction = () => settings.open(API);
+    barItem.show();
 }

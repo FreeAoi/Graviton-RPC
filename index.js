@@ -35,10 +35,10 @@ export const entry = (API) => {
         rpc.setActivity({ ...defaultPresence });
     });
 
-    RunningConfig.on("aTabHasBeenFocused", ({ client, instance, parentFolder, directory, tabElement }) => {
+    RunningConfig.on("aTabHasBeenFocused", ({ client, instance, projectPath, directory, tabElement }) => {
         if (client) {
             const editingFile = path.basename(path.normalize(directory));
-            const workingProject = path.basename(path.normalize(parentFolder));
+            const workingProject = path.basename(path.normalize(projectPath));
             var file = client.do("getMode", { instance }).name;
             switch (file) {
                 case "application/json":

@@ -19,6 +19,8 @@ Contributions and suggestions are welcomed
 
 ### 🎉 Special thanks
 Many thanks to [Marc](https://github.com/marc2332) for contributing to the plugin and for create Graviton Editor
+
 Many thanks to [Drylotrans](https://github.com/Drylotrans) for added the new features in this version
+
 Many thanks to [MarcinK50](https://github.com/MarcinK50) for Polish language support
 

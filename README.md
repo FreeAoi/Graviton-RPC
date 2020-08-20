@@ -5,17 +5,12 @@ A fully customizable Discord Rich Presence for the amazing **Graviton Editor**
 
 Contributions and suggestions are welcomed
 
-### 📥 Update 1.0.3
+### 📥 Update 1.0.5
 
 ```
-- Added a dialog to customize your presence
-
-- Added a new varity for different file extensions
-- Now the graviton version need be 2.0.91 or more
-- Couldn't show current editing file in Linux and MacOS
-- Now when you close the last opened tab it won't show anything instead of showing the last tab
-- Disabled the plugin when Graviton is in development mode
-- Now will appeared a button for try to reconnect in the Status Bar, and when are connected too.
+- Now you can put your own presence message
+- Added language support
+- New Icons
 ```
 
 ### 📷 Screenshots
@@ -24,6 +19,6 @@ Contributions and suggestions are welcomed
 
 ### 🎉 Special thanks
 Many thanks to [Marc](https://github.com/marc2332) for contributing to the plugin and for create Graviton Editor
+Many thanks to [Drylotrans](https://github.com/Drylotrans) for added the new features in this version
+Many thanks to [MarcinK50](https://github.com/MarcinK50) for Polish language support
 
-- [Marc Espín Sanz](https://github.com/marc2332)
-- [Graviton Editor](https://github.com/Graviton-Code-Editor/Graviton-App)

@@ -21,7 +21,7 @@ export const strings = {
         english: "Error in GravitonRPC",
         spanish: "Error en GravitonRPC",
 	polish: "Błąd w GravitonRPC",
-	turkish: "GravitonRPC'de bir hata"
+	turkish: "GravitonRPC'de hata oluştu"
     },
     settings: {
         english: "Click here to open settings",
